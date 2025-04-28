@@ -1,4 +1,4 @@
-Welcome to the second part of the interview, this should only take a couple of hours. In this repo there is a simple image segmentation AI, your task is to write a dataloader and improve the training to try to beat the following losses:
+Welcome to the second part of the interview, this should only take a couple of hours (you can always use an LLM/copilot to do this). In this repo there is a simple image segmentation AI, your task is to write a dataloader and improve the training to try to beat the following losses:
 
 | Epoch | Train Loss | Val Loss  | Mean IoU | Time (s) |
 |:-----:|:----------:|:---------:|:--------:|:--------:|
