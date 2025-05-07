@@ -96,55 +96,6 @@ class SegmentationDataset(Dataset):
                 break
         
         return np.array(mask)
-    
-def print_latest_metrics_table():
-    metrics_dir = 'metrics'
-    try:
-        if not os.path.isdir(metrics_dir):
-            print(f"Metrics directory '{metrics_dir}' not found. Run training first.")
-            return
-
-        all_files = [
-            os.path.join(metrics_dir, f)
-            for f in os.listdir(metrics_dir)
-            if os.path.isfile(os.path.join(metrics_dir, f)) and
-               f.startswith('training_metrics_') and f.endswith('.csv')
-        ]
-        if not all_files:
-            print(f"No 'training_metrics_*.csv' files found in the '{metrics_dir}' directory.")
-            return
-
-        latest_file = max(all_files, key=os.path.getmtime)
-        print(f"\n--- Training Metrics Summary from: {os.path.basename(latest_file)} ---")
-
-        with open(latest_file, 'r', newline='') as f:
-            reader = csv.reader(f)
-            try:
-                header = next(reader) # Read header row
-                # Expected header: ['Epoch', 'Train Loss', 'Val Loss', 'Mean IoU', 'Time (s)']
-                print(f"{'Epoch':<7} | {'Train Loss':<12} | {'Val Loss':<10} | {'Mean IoU':<10} | {'Time (s)':<10}")
-                print("-" * 60) # Separator line
-
-                for i, row in enumerate(reader):
-                    if len(row) == 5:
-                        try:
-                            epoch = row[0]
-                            train_loss = float(row[1])
-                            val_loss = float(row[2])
-                            mean_iou = float(row[3])
-                            time_s = float(row[4])
-                            print(f"{epoch:<7} | {train_loss:<12.4f} | {val_loss:<10.4f} | {mean_iou:<10.4f} | {time_s:<10.2f}")
-                        except ValueError:
-                            print(f"Warning: Could not parse row {i+1} in {os.path.basename(latest_file)}: {row}")
-                    else:
-                        print(f"Warning: Skipping malformed row {i+1} in {os.path.basename(latest_file)} (expected 5 columns): {row}")
-            except StopIteration:
-                print(f"Warning: The metrics file {os.path.basename(latest_file)} is empty or has no data rows.")
-
-    except FileNotFoundError:
-        print(f"Error: The directory '{metrics_dir}' or a specific metrics file was not found. Ensure training has run.")
-    except Exception as e:
-        print(f"An error occurred while trying to print metrics: {e}")
         
 def print_latest_metrics_table():
     metrics_dir = 'metrics'
